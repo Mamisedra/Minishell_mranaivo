@@ -6,7 +6,7 @@
 /*   By: mranaivo <mranaivo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/20 13:15:10 by mranaivo          #+#    #+#             */
-/*   Updated: 2024/11/12 14:15:55 by mranaivo         ###   ########.fr       */
+/*   Updated: 2024/11/13 12:48:57 by mranaivo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ int	ft_strlen_quote(char *str)
 			while (str[++i] == '\"')
 				len++;
 		}
-		if (str[i] != '\'' && str[i] != '"')
+		if (str[i] != '\'' && str[i] != '"' && str[i] != '\0')
 		{
 			i++;
 			len++;

@@ -6,7 +6,7 @@
 /*   By: mranaivo <mranaivo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/13 12:24:46 by mranaivo          #+#    #+#             */
-/*   Updated: 2024/11/11 15:41:15 by mranaivo         ###   ########.fr       */
+/*   Updated: 2024/11/13 13:27:29 by mranaivo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,10 +129,10 @@ void		remove_heredoc(t_list **file);
 
 /*======================CHECK_SYNTAX======================*/
 
-void		capture_heredoc(char *str);
+void		capture_heredoc(char *str, t_env *env);
 void		copy_char_to_file(char *content);
-int			get_err_value(t_list *curr, int state);
-int			check_syntax(t_list *lst);
+int			get_err_value(t_list *curr, int state, t_env *env);
+int			check_syntax(t_list *lst, t_env *env);
 
 /*========================PRINT_SHELL=====================*/
 
@@ -157,10 +157,10 @@ bool		is_token(char *str, int pipe);
 /*=========================PIPE_FILE=========================*/
 
 bool		pipe_end(char *str);
-int			complete_pipe(t_shell *shell);
-int			close_pipe(char *str, t_shell *shell);
+int			complete_pipe(t_shell *shell, t_env *env);
+int			close_pipe(char *str, t_shell *shell, t_env *env);
 
 
 void	_expand_shell(t_shell **shell, t_env *env);
-
+void ft_use(char **str, t_env *env);
 #endif

@@ -6,7 +6,7 @@
 /*   By: mranaivo <mranaivo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/10 13:22:53 by mranaivo          #+#    #+#             */
-/*   Updated: 2024/11/10 14:31:07 by mranaivo         ###   ########.fr       */
+/*   Updated: 2024/11/13 13:17:40 by mranaivo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ bool	pipe_end(char *str)
 	return (false);
 }
 
-int	complete_pipe(t_shell *shell)
+int	complete_pipe(t_shell *shell, t_env *env)
 {
 	char	*rl;
 	t_list	*lst;
@@ -50,7 +50,7 @@ int	complete_pipe(t_shell *shell)
 			if (check_quote_unclose(rl))
 				return (1);
 			tokenisation(rl, &lst);
-			err = check_syntax(lst);
+			err = check_syntax(lst, env);
 			if (err == 1)
 				return (free(rl), 1);
 			prompt_lexer(rl, &shell);
@@ -64,10 +64,10 @@ int	complete_pipe(t_shell *shell)
 	return (free(rl), err);
 }
 
-int	close_pipe(char *str, t_shell *shell)
+int	close_pipe(char *str, t_shell *shell, t_env *env)
 {
 	if (!pipe_end(str))
 		return (0);
 	else
-		return (complete_pipe(shell));
+		return (complete_pipe(shell, env));
 }

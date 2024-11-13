@@ -6,7 +6,7 @@
 /*   By: mranaivo <mranaivo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/13 12:24:46 by mranaivo          #+#    #+#             */
-/*   Updated: 2024/11/13 13:27:29 by mranaivo         ###   ########.fr       */
+/*   Updated: 2024/11/13 13:42:08 by mranaivo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -162,5 +162,6 @@ int			close_pipe(char *str, t_shell *shell, t_env *env);
 
 
 void	_expand_shell(t_shell **shell, t_env *env);
-void ft_use(char **str, t_env *env);
+void 	ft_use(char **str, t_env *env);
+
 #endif

@@ -6,7 +6,7 @@
 /*   By: mranaivo <mranaivo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/11 14:46:32 by mranaivo          #+#    #+#             */
-/*   Updated: 2024/11/13 15:43:47 by mranaivo         ###   ########.fr       */
+/*   Updated: 2024/11/14 11:54:21 by mranaivo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ void	print_env(t_env *evp)
 	while (evp != NULL)
 	{
 		printf("%s=", evp->key);
-		printf("%s\n", evp->env_s);
+		printf("%s\n", evp->value);
 		evp = evp->next;
 	}
 }
@@ -118,7 +118,7 @@ char	*get_env(char *str, t_env *env)
 	while (env)
 	{
 		if (ft_strcmp(str, env->key) == 0)
-			return (ft_strdup(env->env_s));
+			return (ft_strdup(env->value));
 		env = env->next;
 	}
 	return (ft_strdup(""));

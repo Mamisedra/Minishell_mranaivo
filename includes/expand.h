@@ -6,7 +6,7 @@
 /*   By: mranaivo <mranaivo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/04 16:48:25 by mranaivo          #+#    #+#             */
-/*   Updated: 2024/11/13 13:15:52 by mranaivo         ###   ########.fr       */
+/*   Updated: 2024/11/14 12:11:29 by mranaivo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ typedef struct s_shell	t_shell;
 typedef struct s_env
 {
 	char			*key;
-	char			*env_s;
+	char			*value;
 	struct s_env	*next;
 }					t_env;
 
@@ -51,7 +51,7 @@ void	_expand_(char *str, t_exp **exp);
 void	duplicate_env(char **env, t_env **envp);
 void	ft_back_env(t_env **envp, t_env *env);
 void	ft_env_clear(t_env **env);
-t_env	*ft_new_env(char *key, char *env_s);
+t_env	*ft_new_env(char *key, char *value);
 
 /*===========================EXPAND_UTILS==========================*/
 

@@ -6,7 +6,7 @@
 /*   By: mranaivo <mranaivo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/13 14:59:37 by mranaivo          #+#    #+#             */
-/*   Updated: 2024/11/13 15:49:52 by mranaivo         ###   ########.fr       */
+/*   Updated: 2024/11/14 14:33:39 by mranaivo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 
 int	ft_cd(t_data *data)
 {
+	(void)data;
 	return (0);
 }
 
@@ -31,10 +32,12 @@ void	ft_echo_n(t_data *data)
 
 int	ft_pwd(t_data *data)
 {
+	(void)data;
 	return (0);
 }
 
 int	ft_exit(t_data *data)
 {
+	(void)data;
 	return (0);
 }

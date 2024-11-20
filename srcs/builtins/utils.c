@@ -6,7 +6,7 @@
 /*   By: mranaivo <mranaivo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/13 15:57:45 by mranaivo          #+#    #+#             */
-/*   Updated: 2024/11/14 14:17:45 by mranaivo         ###   ########.fr       */
+/*   Updated: 2024/11/18 10:01:50 by mranaivo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,6 +117,8 @@ t_env	*find_key(t_env *env, char *argv)
 	if (!argv)
 		return (NULL);
 	len = ft_strlen_chr(argv, '=');
+	if (len == 0)
+		return(NULL);
 	key = ft_strndup(argv, len);
 	curr = env;
 	while (curr)
@@ -144,7 +146,7 @@ void	replace_value(t_env **env, char *argv)
 	key = ft_strndup(argv, len);
 	if (!key)
 		return ;
-	value = ft_strdup(argv + len);
+	value = ft_strdup(argv + len + 1);
 	if (!value)
 		return ;
 	free((*env)->key);
@@ -159,37 +161,47 @@ void	export_new_key(t_env **env, char *argv)
 	char	*key;
 	char	*value;
 
-	if (!argv)
+	if (!argv || !ft_strchr(argv, '='))
 		return ;
 	len = ft_strlen_chr(argv, '=');
 	key = ft_strndup(argv, len);
 	if (!key)
 		return ;
-	value = ft_strdup(argv + len);
+	value = ft_strdup(argv + len + 1);
 	if (!value)
 		return ;
 	ft_back_env(env, ft_new_env(key,value));
 	free(key);
 }
 
-void	delete_one(t_env **env, char *key)
+void delete_node(t_env *temp)
 {
-	t_env	*currennt;
-	t_env	*next;
+	if (!temp)
+		return ;
+	free(temp->key);
+	free(temp->value);
+	free(temp);
+}
 
-	currennt = *env;
-	next = *env;
-	while (currennt)
+
+void ft_list_remove_if(t_env **env, char *key_delone)
+{
+	t_env *cur;
+
+	cur = *env;
+	if (env == NULL || *env == NULL)
+		return;
+	if (ft_strcmp(cur->key, key_delone) == 0)
 	{
-		if (!ft_strcmp(key, currennt->key))
-		{
-			next = currennt->next;
-			free(currennt->key);
-			free(currennt->value);
-			free(currennt);
-			currennt = next;
-		}
-		else
-			currennt = currennt->next;
+		*env = cur->next;
+		free(cur->key);
+		free(cur->value);
+		free(cur);
+		return ;
+	}
+	else
+	{
+		cur = *env;
+		ft_list_remove_if(&cur->next, key_delone);
 	}
 }

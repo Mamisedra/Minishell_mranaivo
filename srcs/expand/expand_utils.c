@@ -6,7 +6,7 @@
 /*   By: mranaivo <mranaivo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/11 14:46:32 by mranaivo          #+#    #+#             */
-/*   Updated: 2024/11/14 11:54:21 by mranaivo         ###   ########.fr       */
+/*   Updated: 2024/11/20 15:28:14 by mranaivo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,10 +32,9 @@ int	ft_strlen_doll(char *str, char *delim)
 
 void	print_env(t_env *evp)
 {
-	while (evp != NULL)
+	while (evp)
 	{
-		printf("%s=", evp->key);
-		printf("%s\n", evp->value);
+		printf("%s=%s\n",evp->key, evp->value);
 		evp = evp->next;
 	}
 }
@@ -74,7 +73,7 @@ void	add_one(t_list **lst, char **str, int *i)
 
 int check_all(char c)
 {
-	if (!ft_isalpha(c) && !ft_isdigit((char)c) && c != '_')
+	if (!ft_isalpha(c) && !ft_isdigit((char)c) && c != '_' && c != '?')
 		return (0);
 	return (1);
 }

@@ -6,7 +6,7 @@
 /*   By: mranaivo <mranaivo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/20 15:59:22 by mranaivo          #+#    #+#             */
-/*   Updated: 2024/11/20 16:24:55 by mranaivo         ###   ########.fr       */
+/*   Updated: 2024/11/21 11:20:19 by mranaivo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,3 +67,20 @@ void	get_redir(t_redir **redir, t_token *token)
 	}
 }
 
+void	__redir_clear(t_redir **redir)
+{
+	t_redir *curr;
+	t_redir *next_node;
+
+	if (!redir)
+		return ;
+	curr = *redir;
+	while (curr)
+	{
+		next_node = curr->next;
+		free(curr->str);
+		free(curr);
+		curr = next_node;
+	}
+	curr = NULL;
+}

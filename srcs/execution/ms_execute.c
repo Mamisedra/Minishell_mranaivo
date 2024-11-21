@@ -6,7 +6,7 @@
 /*   By: mranaivo <mranaivo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/15 10:04:00 by mranaivo          #+#    #+#             */
-/*   Updated: 2024/11/20 15:40:01 by mranaivo         ###   ########.fr       */
+/*   Updated: 2024/11/21 17:23:01 by mranaivo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -206,48 +206,71 @@ void	execution(t_data *data, t_exc_bul state)
 	free_str(cenv);
 }
 
-int		exec_and_wait(t_data *data)
+int exec_and_wait(t_data *data)
 {
-	pid_t	pid;
-	int		fd[2];
-	int		fd_in;
-	int		status;
+    pid_t   pid;
+    int     status = 0;
+    int     prev_pipe[2] = {-1, -1};
+    int     curr_pipe[2];
+    int     standard[2];
 
-	fd_in = STDIN_FILENO;
-	while (data)
-	{
-		if (pipe(fd) < 0)
-		{
-			perror("pipe");
-			return (1);
-		}
-		if (is_builtins(data->cmd))
-		{
-			execution(data, BUILTINS);
-			ft_close(fd);
-		}
-		else
-		{
-			pid = fork();
-			if (pid == 0)
-			{
-				close(fd[0]);
-				dup2(fd_in, STDIN_FILENO);
-				if (data->next)
-					dup2(fd[1], STDOUT_FILENO);
-				execution(data, EXECVE);
-				ft_close(fd);
-			}
-		}
-		fd_in = dup(fd[0]);
-		ft_close(fd);
-		data = data->next;
-	}
-	ft_close(fd);
-	waitpid(pid, &status, 0);
-	while (wait(NULL) > 0)
-		;
-	ft_data_clear(&data);
-	return (status);
+	copy_standard(&standard[0], &standard[1], 1);
+    while (data)
+    {
+        if (pipe(curr_pipe) < 0)
+            return ( perror("pipe"), 1);
+        if (is_builtins(data->cmd))
+            execution(data, BUILTINS);
+        else
+        {
+            pid = fork();
+            if (pid < 0)
+                return (perror("fork"), 1);
+            if (pid == 0)
+            {
+                if (prev_pipe[0] != -1)
+                {
+                    dup2(prev_pipe[0], STDIN_FILENO);
+                    close(prev_pipe[0]);
+                }
+                else if (data->fd_in > 2)
+                {
+                    dup2(data->fd_in, STDIN_FILENO);
+					perror("Ao gaga kely");
+                    close(data->fd_in);
+                }
+                if (data->fd_out > 2)
+                {
+                    dup2(data->fd_out, STDOUT_FILENO);
+					perror("Ao gaga kely 2");
+				    close(data->fd_out);
+                }
+                else if (data->next)
+                    dup2(curr_pipe[1], STDOUT_FILENO);
+                close(curr_pipe[0]);
+                close(curr_pipe[1]);
+                if (prev_pipe[0] != -1)
+					close(prev_pipe[1]);
+                execution(data, EXECVE);
+                exit(1);
+            }
+            if (prev_pipe[0] != -1)
+            {
+                close(prev_pipe[0]);
+                close(prev_pipe[1]);
+            }
+            prev_pipe[0] = curr_pipe[0];
+            prev_pipe[1] = curr_pipe[1];
+        }
+        data = data->next;
+    }
+	copy_standard(&standard[0], &standard[1], 1);
+    if (prev_pipe[0] != -1)
+    {
+        close(prev_pipe[0]);
+        close(prev_pipe[1]);
+    }
+    while (wait(&status) > 0)
+			;
+    return (WIFEXITED(status) ? WEXITSTATUS(status) : 1);
 }
-

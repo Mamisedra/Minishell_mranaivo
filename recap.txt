@@ -32,3 +32,64 @@ WTERMSIG(status) : Si WIFSIGNALED est vrai, cette macro retourne le numéro du s
 WIFSTOPPED(status) : Vérifie si le processus enfant est arrêté (par exemple, suspendu par un signal).
 WSTOPSIG(status) : Si WIFSTOPPED est vrai, cette macro retourne le signal qui a arrêté le processus.
 WIFCONTINUED(status) : Vérifie si le processus enfant a été repris après une suspension. .
+
+BACK-UP:
+int		exec_and_wait(t_data *data)
+{
+	pid_t	pid;
+	int		fd[2];
+	int		fd_term[2];
+	int		fd_in;
+	int		status;
+
+	copy_standard(&fd_term[0], &fd_term[1], 1);
+	fd_in = STDIN_FILENO;
+	while (data)
+	{
+		if (pipe(fd) < 0)
+		{
+			perror("pipe");
+			return (1);
+		}
+		if (is_builtins(data->cmd))
+		{
+			execution(data, BUILTINS);
+			ft_close(fd);
+		}
+		else
+		{
+			pid = fork();
+			if (pid == 0)
+			{
+				close(fd[0]);
+				if (data->fd_in > 2)
+				{
+					dup2(data->fd_in, STDIN_FILENO);
+					close(data->fd_in);
+				}
+				else
+					dup2(fd_in, STDIN_FILENO);
+				if (data->fd_out > 2)
+				{
+					dup2(data->fd_out, STDOUT_FILENO);
+                	close(data->fd_out);
+				}
+				else if (data->next)
+					dup2(fd[1], STDOUT_FILENO);
+				execution(data, EXECVE);
+				ft_close(fd);
+			}
+		}
+		fd_in = dup(fd[0]);
+		close(fd_in);
+		ft_close(fd);
+		data = data->next;
+	}
+	ft_close(fd);
+	copy_standard(&fd_term[0], &fd_term[1], 0);
+	waitpid(pid, &status, 0);
+	while (wait(NULL) > 0)
+		;
+	ft_data_clear(&data);
+	return (status);
+}

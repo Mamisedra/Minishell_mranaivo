@@ -6,7 +6,7 @@
 /*   By: mranaivo <mranaivo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/15 10:04:42 by mranaivo          #+#    #+#             */
-/*   Updated: 2024/11/20 16:25:42 by mranaivo         ###   ########.fr       */
+/*   Updated: 2024/11/21 14:12:05 by mranaivo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,8 @@ typedef enum e_exc_bul
 /*========================MS_REDIR======================*/
 
 void	get_redir(t_redir **redir, t_token *token);
+int		check_file(t_redir *red);
+void	__redir_clear(t_redir **redir);
 
 /*===================MS_DATA_COPMLETE===================*/
 
@@ -69,6 +71,7 @@ int		ms_redirect_in(t_shell *shell);
 int		ms_redirect_out(t_shell *shell);
 int		one_cmd(t_data *data);
 void	ft_close(int fd[]);
+void	copy_standard(int *fd_in, int *fd_out, int state);
 
 void	execution(t_data *data, t_exc_bul exec);
 int		exec_and_wait(t_data *data);

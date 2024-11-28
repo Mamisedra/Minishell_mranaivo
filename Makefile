@@ -6,10 +6,7 @@ RM = rm -rf
 SRCS =  srcs/parsing/main.c  srcs/parsing/utlis.c srcs/parsing/clean_code.c srcs/parsing/lexer.c  srcs/parsing/parsing.c\
 		srcs/parsing/shell_list.c  srcs/parsing/print_parsing.c srcs/parsing/parsing_utils.c\
 		srcs/parsing/token_list.c srcs/parsing/check_syntax.c srcs/parsing/code_status.c srcs/parsing/libft.c srcs/parsing/pipe_file.c\
-		srcs/expand/expand_list.c srcs/expand/expand_shell.c srcs/expand/parse_expand.c srcs/expand/expand_env.c srcs/expand/expand_utils.c\
-		srcs/builtins/utils.c srcs/builtins/builtins_env.c srcs/builtins/builtins.c srcs/builtins/builtins_execute.c\
-		srcs/execution/ms_execute.c srcs/execution/ms_clean_code.c srcs/execution/ms_utils.c srcs/execution/ms_data_complete.c\
-		srcs/execution/ms_redir_utils.c
+		srcs/expand/expand_list.c srcs/expand/expand_shell.c srcs/expand/parse_expand.c srcs/expand/expand_env.c srcs/expand/expand_utils.c
 OBJS = ${SRCS:.c=.o}
 LIB_DIR = ./lib/libft/
 
@@ -45,6 +42,6 @@ run:
 	@clear
 	@valgrind --track-origins=yes --leak-check=full --suppressions=readline_suppr.supp ./minishell
 valgrind:
-	@valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --verbose --suppressions=readline_suppr.supp -s ./minishell
+	@valgrind --track-origins=yes --leak-check=full --suppressions=readline_suppr.supp -s ./minishell
 re : fclean all
 .PHONY: all re fclean clean

@@ -6,7 +6,7 @@
 /*   By: mranaivo <mranaivo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 17:02:43 by mranaivo          #+#    #+#             */
-/*   Updated: 2024/11/10 14:24:19 by mranaivo         ###   ########.fr       */
+/*   Updated: 2024/11/25 12:53:08 by mranaivo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,7 @@ static void	_set_parms(t_token **curr, int stat)
 	*curr = (*curr)->next;
 }
 
-void	_token_state(t_token **token)
+void	_token_state(t_token **token, t_list **hdoc)
 {
 	t_token	*curr;
 	t_token	*top;
@@ -120,7 +120,9 @@ void	_token_state(t_token **token)
 		if (curr->state == FILE_NAME)
 		{
 			free(curr->token);
-			curr->token = ft_strdup("./heredoc/.Heredoc");
+			curr->token = ft_strdup((*hdoc)->content);
+			if ((*hdoc)->next)
+				(*hdoc) = (*hdoc)->next;
 		}
 		if (curr != NULL)
 			curr = curr->next;

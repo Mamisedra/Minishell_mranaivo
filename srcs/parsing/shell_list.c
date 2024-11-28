@@ -6,7 +6,7 @@
 /*   By: mranaivo <mranaivo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/20 15:27:18 by mranaivo          #+#    #+#             */
-/*   Updated: 2024/11/10 14:22:35 by mranaivo         ###   ########.fr       */
+/*   Updated: 2024/11/25 11:59:19 by mranaivo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ void	shell_add_back_p(t_shell **shell, t_shell *new_shell)
 	}
 }
 
-void	_complete_shell(t_shell **shell)
+void	_complete_shell(t_shell **shell, t_list **hdoc)
 {
 	int		i;
 	t_shell	*current;
@@ -72,7 +72,7 @@ void	_complete_shell(t_shell **shell)
 		current->id = i;
 		current->in = ft_flags_in(current);
 		current->out = ft_flags_out(current);
-		_token_state(&current->token);
+		_token_state(&current->token, hdoc);
 		_input_output_file(current);
 		i++;
 		current = current->next;

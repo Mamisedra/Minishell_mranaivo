@@ -6,7 +6,7 @@
 /*   By: mranaivo <mranaivo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/20 12:25:14 by mranaivo          #+#    #+#             */
-/*   Updated: 2024/11/13 13:18:19 by mranaivo         ###   ########.fr       */
+/*   Updated: 2024/11/25 12:59:15 by mranaivo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,23 +92,28 @@ void	tokenisation(char *str, t_list **lst)
 int	parsing(char *str, t_shell **shell, t_env *env)
 {
 	t_list	*lst;
+	t_list	*head;
+	t_list	*heredoc;
 	int		err;
 
 	lst = NULL;
+	heredoc = NULL;
 	if (check_quote_unclose(str))
 		return (1);
 	tokenisation(str, &lst);
-	err = check_syntax(lst, env);
+	err = check_syntax(lst, env,  &heredoc);
 	if (err == 1)
-		return (1);
+		return (ft_lstclear(&heredoc, free), 1);
 	prompt_lexer(str, shell);
-	err = close_pipe(str, *shell, env);
+	err = close_pipe(str, *shell, env, &heredoc);
 	if (err == 1)
-		return (1);
+		return (ft_lstclear(&heredoc, free), 1);
 	if (!shell || !*shell)
-		return (1);
+		return (ft_lstclear(&heredoc, free), 1);
 	_expand_shell(shell, env);
 	loop_token(shell);
-	_complete_shell(shell);
+	head = heredoc;
+	_complete_shell(shell, &heredoc);
+	ft_lstclear(&head, free);
 	return (0);
 }

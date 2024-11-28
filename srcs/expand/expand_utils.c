@@ -6,7 +6,7 @@
 /*   By: mranaivo <mranaivo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/11 14:46:32 by mranaivo          #+#    #+#             */
-/*   Updated: 2024/11/20 15:28:14 by mranaivo         ###   ########.fr       */
+/*   Updated: 2024/11/12 17:31:33 by mranaivo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,9 +32,10 @@ int	ft_strlen_doll(char *str, char *delim)
 
 void	print_env(t_env *evp)
 {
-	while (evp)
+	while (evp != NULL)
 	{
-		printf("%s=%s\n",evp->key, evp->value);
+		printf("%s = ", evp->key);
+		printf("%s\n", evp->env_s);
 		evp = evp->next;
 	}
 }
@@ -73,7 +74,7 @@ void	add_one(t_list **lst, char **str, int *i)
 
 int check_all(char c)
 {
-	if (!ft_isalpha(c) && !ft_isdigit((char)c) && c != '_' && c != '?')
+	if (!ft_isalpha(c) && !ft_isdigit((char)c) && c != '_')
 		return (0);
 	return (1);
 }
@@ -88,6 +89,9 @@ void	add_two(t_list **lst, char **str, int *i)
 		(*i)++;
 		len++;
 	}
+	// (*str)[*i] != '\0' && (*str)[*i] != '$' && (*str)[*i] != '"' &&
+	// 		(*str)[*i] != '\'' && (*str)[*i] != ' ' && (*str)[*i] != '\t' &&
+	// 		(*str)[*i] != '<' && (*str)[*i] != '>' && (*str)[*i] != '|')
 	while (check_all((*str)[*i]))
 	{
 		len++;
@@ -117,7 +121,7 @@ char	*get_env(char *str, t_env *env)
 	while (env)
 	{
 		if (ft_strcmp(str, env->key) == 0)
-			return (ft_strdup(env->value));
+			return (ft_strdup(env->env_s));
 		env = env->next;
 	}
 	return (ft_strdup(""));

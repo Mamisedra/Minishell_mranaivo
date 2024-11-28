@@ -6,7 +6,7 @@
 /*   By: mranaivo <mranaivo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/20 16:22:42 by mranaivo          #+#    #+#             */
-/*   Updated: 2024/11/13 13:39:30 by mranaivo         ###   ########.fr       */
+/*   Updated: 2024/11/25 12:49:28 by mranaivo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ static char	*heredoc(char *str)
 	return (ret);
 }
 
-void	capture_heredoc(char *str, t_env *env)
+void	capture_heredoc(char *str, t_env *env, t_list **hdoc)
 {
 	char	*eof;
 	char	*here;
@@ -59,6 +59,7 @@ void	capture_heredoc(char *str, t_env *env)
 	if (!here)
 		return ;
 	ft_use(&here, env);
+	ft_lstadd_back(hdoc, ft_lstnew(ft_strdup(here)));
 	copy_char_to_file(here);
 	free(here);
 }
@@ -85,7 +86,7 @@ void	copy_char_to_file(char *content)
 	close(fd);
 }
 
-int	get_err_value(t_list *curr, int state, t_env *env)
+int	get_err_value(t_list *curr, int state, t_env *env, t_list **heredoc)
 {
 	int	err;
 
@@ -103,7 +104,7 @@ int	get_err_value(t_list *curr, int state, t_env *env)
 			err = 1;
 		}
 		else if (state == 1)
-			capture_heredoc(curr->next->content, env);
+			capture_heredoc(curr->next->content, env, heredoc);
 	}
 	else if ((ft_strcmp("|", curr->content) == 0) && !curr->next)
 		err = 2;
@@ -115,7 +116,7 @@ int	get_err_value(t_list *curr, int state, t_env *env)
 	return (err);
 }
 
-int	check_syntax(t_list *lst, t_env *env)
+int	check_syntax(t_list *lst, t_env *env, t_list **heredoc)
 {
 	t_list	*curr;
 	int		err;
@@ -132,11 +133,11 @@ int	check_syntax(t_list *lst, t_env *env)
 	while (curr && !err)
 	{
 		if (is_heredoc(curr->content))
-			err = get_err_value(curr, 1, env);
+			err = get_err_value(curr, 1, env, heredoc);
 		else if (is_token(curr->content, 0))
-			err = get_err_value(curr, 0, env);
+			err = get_err_value(curr, 0, env, heredoc);
 		else if (is_pipe(curr->content))
-			err = get_err_value(curr, 5, env);
+			err = get_err_value(curr, 5, env, heredoc);
 		if (err)
 			break ;
 		curr = curr->next;

@@ -6,7 +6,7 @@
 /*   By: mranaivo <mranaivo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/13 12:24:46 by mranaivo          #+#    #+#             */
-/*   Updated: 2024/11/13 13:42:08 by mranaivo         ###   ########.fr       */
+/*   Updated: 2024/11/25 11:53:17 by mranaivo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,7 +103,7 @@ void		loop_token(t_shell **shell);
 t_shell		*new_shell_list_p(char *str, int i);
 t_shell		*shelllast_p(t_shell *shell);
 void		shell_add_back_p(t_shell **shell, t_shell *new_shell);
-void		_complete_shell(t_shell **shell);
+void		_complete_shell(t_shell **shell, t_list **heredoc);
 void		_input_output_file(t_shell *shell);
 
 /*=======================TOKEN_LIST========================*/
@@ -129,10 +129,10 @@ void		remove_heredoc(t_list **file);
 
 /*======================CHECK_SYNTAX======================*/
 
-void		capture_heredoc(char *str, t_env *env);
+void		capture_heredoc(char *str, t_env *env, t_list **hdoc);
 void		copy_char_to_file(char *content);
-int			get_err_value(t_list *curr, int state, t_env *env);
-int			check_syntax(t_list *lst, t_env *env);
+int			get_err_value(t_list *curr, int state, t_env *env, t_list **hereoc);
+int			check_syntax(t_list *lst, t_env *env, t_list **herdoc);
 
 /*========================PRINT_SHELL=====================*/
 
@@ -142,7 +142,7 @@ void		print_list(t_list *lst);
 
 /*=======================CODE_STATUS========================*/
 
-void		_token_state(t_token **token);
+void		_token_state(t_token **token, t_list **hdoc);
 t_input		ft_flags_in(t_shell *current);
 t_output	ft_flags_out(t_shell *current);
 
@@ -157,11 +157,11 @@ bool		is_token(char *str, int pipe);
 /*=========================PIPE_FILE=========================*/
 
 bool		pipe_end(char *str);
-int			complete_pipe(t_shell *shell, t_env *env);
-int			close_pipe(char *str, t_shell *shell, t_env *env);
+int			complete_pipe(t_shell *shell, t_env *env, t_list **hdoc);
+int			close_pipe(char *str, t_shell *shell, t_env *env, t_list **heredoc);
 
 
-void	_expand_shell(t_shell **shell, t_env *env);
-void 	ft_use(char **str, t_env *env);
+void		_expand_shell(t_shell **shell, t_env *env);
+void 		ft_use(char **str, t_env *env);
 
 #endif

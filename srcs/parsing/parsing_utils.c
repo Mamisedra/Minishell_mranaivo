@@ -6,7 +6,7 @@
 /*   By: mranaivo <mranaivo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/20 13:15:10 by mranaivo          #+#    #+#             */
-/*   Updated: 2024/11/13 12:48:57 by mranaivo         ###   ########.fr       */
+/*   Updated: 2024/11/22 11:51:53 by mranaivo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,32 +38,38 @@ int	check_quote_unclose(char *str)
 	return (0);
 }
 
-int	ft_strlen_quote(char *str)
+static void	ft_esquive(char *str, char c, int *i, int *len)
 {
-	int		i;
-	int		len;
+	(*i)++;
+	while (str[*i] != c && str[*i] != '\0')
+	{
+		(*i)++;
+		(*len)++;
+	}
+	if (str[*i] == c)
+		(*i)++;
+}
+
+int ft_strlen_quote(char *str)
+{
+    int	i;
+    int	len;
 
 	i = 0;
 	len = 0;
-	while (str[i] != '\0')
-	{
-		if (str[i] == '\'')
-		{
-			while (str[++i] == '\'')
-				len++;
-		}
-		if (str[i] == '\"')
-		{
-			while (str[++i] == '\"')
-				len++;
-		}
-		if (str[i] != '\'' && str[i] != '"' && str[i] != '\0')
-		{
-			i++;
-			len++;
-		}
-	}
-	return (len);
+    while (str[i] != '\0')
+    {
+        if (str[i] == '"')
+			ft_esquive(str, '"', &i, &len);
+        else if (str[i] == '\'')
+			ft_esquive(str, '\'', &i, &len);
+        else
+        {
+            len++;
+            i++;
+        }
+    }
+    return len;
 }
 
 char	*ft_strtok_p(char *str, int *i, char *delim)

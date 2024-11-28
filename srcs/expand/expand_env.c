@@ -6,7 +6,7 @@
 /*   By: mranaivo <mranaivo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/11 11:51:09 by mranaivo          #+#    #+#             */
-/*   Updated: 2024/11/20 15:42:08 by mranaivo         ###   ########.fr       */
+/*   Updated: 2024/11/11 15:02:06 by mranaivo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ static t_env	*ft_env_last(t_env *env)
 	return (env);
 }
 
-t_env	*ft_new_env(char *key, char *value)
+t_env	*ft_new_env(char *key, char *env_s)
 {
 	t_env	*env;
 
@@ -34,7 +34,7 @@ t_env	*ft_new_env(char *key, char *value)
 	if (!env)
 		return (NULL);
 	env->key = ft_strdup(key);
-	env->value = value;
+	env->env_s = env_s;
 	env->next = NULL;
 	return (env);
 }
@@ -49,7 +49,7 @@ void	ft_env_clear(t_env **env)
 		{
 			tmp = (*env)->next;
 			free((*env)->key);
-			free((*env)->value);
+			free((*env)->env_s);
 			free(*env);
 			*env = tmp;
 		}
